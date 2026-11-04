@@ -252,4 +252,40 @@ public class CoffeeMakerTest {
         boolean resChoc = coffeeMaker.addInventory(0, 0, 0, -1);
         assertFalse(resChoc, "Negative chocolate should fail");
     }
+    @Test
+    void testDeleteRecipe_ValidAndNull() {
+        Recipe r = new Recipe();
+        r.setName("Coffee");
+        
+        // Add recipe first so it exists
+        coffeeMaker.addRecipe(r);
+
+        // Test deleting a valid existing recipe returns true
+        assertTrue(coffeeMaker.deleteRecipe(r));
+
+        // Test deleting null explicitly returns false (kills the negated conditional mutant)
+        assertFalse(coffeeMaker.deleteRecipe(null));
+    }
+    @Test
+    void testMakeCoffee_UpdatesInventoryAccurately() {
+        Recipe r = new Recipe();
+        r.setName("Latte");
+        r.setPrice(50);
+        r.setAmtCoffee(2);
+        r.setAmtMilk(1);
+        r.setAmtSugar(1);
+        r.setAmtChocolate(0);
+
+        coffeeMaker.addRecipe(r);
+
+        // Initial inventory is 15 for everything
+        // Making coffee should add coffee (+2) and subtract milk/sugar (-1)
+        int change = coffeeMaker.makeCoffee(r, 50);
+        assertEquals(0, change);
+
+        // Explicitly assert the exact post-transaction inventory levels to kill math/void-call mutants
+        assertEquals(17, coffeeMaker.checkInventory().getCoffee());
+        assertEquals(14, coffeeMaker.checkInventory().getMilk());
+        assertEquals(14, coffeeMaker.checkInventory().getSugar());
+    }
 }

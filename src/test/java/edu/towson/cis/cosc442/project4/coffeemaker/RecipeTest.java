@@ -182,4 +182,47 @@ public class RecipeTest {
         // Assert
         assertEquals("Mocha", text);
     }
+  @Test
+    void testSettersPositiveValues() {
+        recipe.setAmtCoffee(3);
+        assertEquals(3, recipe.getAmtCoffee());
+
+        recipe.setAmtMilk(2);
+        assertEquals(2, recipe.getAmtMilk());
+
+        recipe.setAmtSugar(1);
+        assertEquals(1, recipe.getAmtSugar());
+
+        recipe.setAmtChocolate(4);
+        assertEquals(4, recipe.getAmtChocolate());
+
+        recipe.setPrice(75);
+        assertEquals(75, recipe.getPrice());
+    }
+    @Test
+    void testSettersBoundaryZero() {
+        recipe.setAmtChocolate(0);
+        assertEquals(0, recipe.getAmtChocolate());
+
+        recipe.setAmtCoffee(0);
+        assertEquals(0, recipe.getAmtCoffee());
+
+        recipe.setAmtMilk(0);
+        assertEquals(0, recipe.getAmtMilk());
+
+        recipe.setAmtSugar(0);
+        assertEquals(0, recipe.getAmtSugar());
+
+        recipe.setPrice(0);
+        assertEquals(0, recipe.getPrice());
+    }
+
+    @Test
+    void testEqualsCurrentRecipeNullName() {
+        Recipe nullNameRecipe = new Recipe(); // name is null by default
+        Recipe other = new Recipe();
+        other.setName("Mocha");
+
+        assertFalse(nullNameRecipe.equals(other));
+    }
 }

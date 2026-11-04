@@ -29,7 +29,17 @@ public class InventoryTest {
         // Assert
         assertFalse(enough);
     }
+@Test
+    void testEnoughIngredients_Success() {
+        Recipe recipe = new Recipe();
+        recipe.setAmtCoffee(5);
+        recipe.setAmtMilk(5);
+        recipe.setAmtSugar(5);
+        recipe.setAmtChocolate(5);
 
+        boolean enough = inventory.enoughIngredients(recipe);
+        assertTrue(enough, "Inventory should be enough for these amounts");
+    }
     @Test
     void testGetChocolate() {
         // setUp
@@ -134,4 +144,48 @@ void testSetChocolateBoundaryNegative() {
     //Assert
     assertEquals(0, inventory.getChocolate());
 }
+@Test
+    void testSettersPositiveValues() {
+        inventory.setCoffee(10);
+        assertEquals(10, inventory.getCoffee());
+
+        inventory.setMilk(5);
+        assertEquals(5, inventory.getMilk());
+
+        inventory.setSugar(8);
+        assertEquals(8, inventory.getSugar());
+
+        inventory.setChocolate(12);
+        assertEquals(12, inventory.getChocolate());
+    }
+    @Test
+    void testSettersBoundaryZero() {
+        // Test setting exact boundary value 0 for all ingredients
+        inventory.setCoffee(0);
+        assertEquals(0, inventory.getCoffee());
+
+        inventory.setMilk(0);
+        assertEquals(0, inventory.getMilk());
+
+        inventory.setSugar(0);
+        assertEquals(0, inventory.getSugar());
+
+        inventory.setChocolate(0);
+        assertEquals(0, inventory.getChocolate());
+    }
+
+    @Test
+    void testEnoughIngredients_ExactBoundary() {
+        // Default inventory has 15 units of each. 
+        // Test when recipe requires exact match (15) to kill boundary mutants (< vs <=).
+        Recipe recipe = new Recipe();
+        recipe.setAmtCoffee(15);
+        recipe.setAmtMilk(15);
+        recipe.setAmtSugar(15);
+        recipe.setAmtChocolate(15);
+
+        boolean enough = inventory.enoughIngredients(recipe);
+        assertTrue(enough, "Inventory should be enough when ingredients match exact inventory quantities");
+    }
+    
 }
