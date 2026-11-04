@@ -223,4 +223,33 @@ public class CoffeeMakerTest {
         // Assert
         assertEquals(100, returned);
     }
+@Test
+    public void testAddInventory_validAndZero() {
+        // Test adding valid positive amounts including sugar
+        boolean result1 = coffeeMaker.addInventory(1, 1, 1, 1);
+        assertTrue(result1, "Adding valid positive inventory should succeed");
+
+        // Test boundary condition with zeros
+        boolean result2 = coffeeMaker.addInventory(0, 0, 0, 0);
+        assertTrue(result2, "Adding zero inventory amounts should succeed");
+    }
+
+   @Test
+    public void testAddInventory_negativeAmounts() {
+        // Test negative coffee
+        boolean resCoffee = coffeeMaker.addInventory(-1, 0, 0, 0);
+        assertFalse(resCoffee, "Negative coffee should fail");
+
+        // Test negative milk
+        boolean resMilk = coffeeMaker.addInventory(0, -1, 0, 0);
+        assertFalse(resMilk, "Negative milk should fail");
+
+        // Test negative sugar (verifying the bug fix on line 117)
+        boolean resSugar = coffeeMaker.addInventory(0, 0, -1, 0);
+        assertFalse(resSugar, "Negative sugar should fail");
+
+        // Test negative chocolate
+        boolean resChoc = coffeeMaker.addInventory(0, 0, 0, -1);
+        assertFalse(resChoc, "Negative chocolate should fail");
+    }
 }
